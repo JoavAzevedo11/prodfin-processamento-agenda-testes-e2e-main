@@ -1,0 +1,54 @@
+{
+  "name": "agenda_testes_e2e",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:grupoboticario/alquimia-template-python-k8s.git"
+  },
+  "keywords": [
+    "scafflater",
+    "templater",
+    "scaffold"
+  ],
+  "license": "MIT",
+  "author": "processamento-agenda",
+  "bugs": {
+    "url": "git@github.com:grupoboticario/alquimia-template-python-k8s/issues"
+  },
+  "homepage": "git@github.com:grupoboticario/alquimia-template-python-k8s#readme",
+  "dependencies": {
+    "@release-it/bumper": "^6.0.1",
+    "news-fragments": "^3.0.18"
+  },
+  "release-it": {
+    "npm": false,
+    "plugins": {
+      "@release-it/bumper": {
+        "out": [
+          {
+            "file": "pyproject.toml",
+            "type": "text/toml",
+            "path": "tool.poetry.version"
+          },
+          {
+            "file": "sonar-project.properties",
+            "type": "text/x-properties",
+            "path": "sonar.projectVersion"
+          },
+          {
+            "file": "package.json",
+            "path": "version"
+          },
+          {
+            "file": "src/agenda_testes_e2e/__init__.py"
+          }
+        ]
+      },
+      "news-fragments": {}
+    }
+  }
+}

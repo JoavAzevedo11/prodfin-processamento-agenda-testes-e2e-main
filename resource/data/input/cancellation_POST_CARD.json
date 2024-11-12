@@ -1,0 +1,28 @@
+{
+    "authorizationCode": "15f1a6d1f6d16",
+    "availableAmount": 1000,
+    "cancellationAmount": 500.53,
+    "cardNumber": "16151*16165",
+    "depositDate": "2024-09-19",
+    "merchantId": "777777777",
+    "metadata": [
+        {
+            "key": "customer_id",
+            "value": "123456"
+        },
+        {
+            "key": "outro_dado",
+            "value": "4fda156f16ds"
+        }
+    ],
+    "nsu": "156165161615",
+    "nsuHost": "16516516516",
+    "provider": "CIELO",
+    "saleId": "16516",
+    "tid": "b3da3f31-9c0a-4da2-9b19-bc1ce4391f6c",
+    "transactionAmount": 1245.67,
+    "transactionDate": "2024-09-19",
+    "transactionGroup": "165165",
+    "transactionStatusId": 2,
+    "transactionType": "CC"
+}

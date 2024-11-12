@@ -1,0 +1,11 @@
+{
+    "robot.variables": {
+        "ROOT": "${workspaceFolder}",
+    },
+    "robot.lint.ignoreVariables": [
+        "ROOT",
+        "response"
+    ],
+    "robot.lint.keywordResolvesToMultipleKeywords": false,
+    "robot.lint.keywordCallArguments": false,
+}

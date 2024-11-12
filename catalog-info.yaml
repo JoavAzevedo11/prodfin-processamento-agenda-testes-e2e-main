@@ -1,0 +1,21 @@
+metadata:
+  tags: ["python", "backend"]
+  name: "agenda-testes-e2e"
+  description: >
+    Integrators Tests e2e with robot
+  annotations:
+    github.com/project-slug: "grupoboticario/prodfin-processamento-agenda-testes-e2e"
+    github.com/team-slug: "grupoboticario/processamento-agenda"
+    argocd/app-selector: "app=agenda-testes-e2e"
+    argocd/proxy-url: "/argocd/produto-financeiro"
+    newrelic/entity-name: "agenda-testes-e2e"
+    sonarqube.org/project-key: "prodfin-processamento-agenda-testes-e2e"
+spec:
+  lifecycle: "experimental"
+  type: kubernetes
+  environmentSet: "aws-produto-financeiro-kubernetes"
+  owner: "processamento-agenda"
+  system: "processamento"
+  domain: "produto-financeiro"
+apiVersion: backstage.io/v1alpha1
+kind: Component

@@ -1,0 +1,70 @@
+**/.git
+**/.github
+**/.gitignore
+**/.vscode
+**/.aws
+**/.ssh
+**/.DS_Store
+*.log
+*.pyc
+*.pyo
+*.pyd
+*.cover
+.tox
+.cache
+.Python
+.pytest_cache
+.python-version
+.hypothesis
+.editorconfig
+__pycache__
+README.md
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Environment
+**/.env
+**/venv
+**/env
+**/env.bak/
+**/venv.bak/
+
+# Coverage
+**/coverage
+.coverage
+.coverage.*
+coverage.xml
+
+# Translations
+**/*.mo
+**/*.pot
+
+# Django stuff:
+**/*.log
+**/local_settings.py
+**/db.sqlite3
+**/db.sqlite3-journal
+
+# IPython
+**/profile_default/
+**/ipython_config.py
+
+# pyenv
+**/.python-version
+
+# Celery stuff
+**/celerybeat-schedule
+**/celerybeat.pid
+
+# mypy
+**/.mypy_cache/
+**/.dmypy.json
+**/dmypy.json
+
+# Debug files
+**/*.dSYM/
+**/*.su
+**/*.idb
+**/*.pdb

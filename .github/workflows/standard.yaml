@@ -1,0 +1,154 @@
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+      - ".scafflater/**"
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+      - ".scafflater/**"
+  workflow_dispatch:
+
+name: Standard
+
+env:
+  app-name: agenda-testes-e2e
+  dockerfile-path: dockerfiles/Dockerfile
+  environment-set: aws-produto-financeiro-kubernetes
+
+jobs:
+  ci:
+    name: CI - Build and Test
+    runs-on: [self-hosted, vs-produto-financeiro-arm64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - name: Python Cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: /opt/hostedtoolcache/Python/
+          key: poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: poetry-
+      - name: Install Dependencies
+        run: make dev-dependencies
+        env:
+          POETRY_VIRTUALENVS_CREATE: false
+          POETRY_HTTP_BASIC_BOTICARIOFEED_USERNAME: build
+          POETRY_HTTP_BASIC_BOTICARIOFEED_PASSWORD: ${{ secrets.AZDO_AZUREARTIFACTS_CT }}
+      - name: Lint
+        run: make lint
+      - name: Test
+        run: make test-coverage
+      - name: Sonar Analysis
+        uses: grupoboticario/actions-ci-sonarcloud@v1
+        if: ${{ vars.SONAR_ENABLED == 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+  ci_docker:
+    name: CI - Docker
+    if: ${{ success() && github.event_name != 'pull_request' }}
+    runs-on: [self-hosted, vs-produto-financeiro-arm64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Docker Build and Push
+        uses: grupoboticario/actions-ci-alquimia@v1
+        with:
+          app-name: ${{ env.app-name }}
+          build-platform: linux/arm64
+          environment-set: ${{ env.environment-set }}
+          dockerfile-path: ${{ env.dockerfile-path }}
+          docker-build-args: |
+            AZDO_AZURE_ARTIFACTS_USR=build
+            AZDO_AZURE_ARTIFACTS_PWD=${{ secrets.AZDO_AZUREARTIFACTS_CT }}
+  cd_dev:
+    name: CD - dev
+    if: ${{ success() && github.event_name != 'pull_request' && github.actor != 'dependabot[bot]' }}
+    needs: [ci, ci_docker]
+    runs-on: [self-hosted, vs-produto-financeiro-arm64]
+    environment:
+      name: dev
+      url: ${{ steps.actions-cd-app.outputs.environment-url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy Infra
+        uses: grupoboticario/actions-cd-alquimia@v1
+        id: actions-cd-infra
+        with:
+          app-name: ${{ env.app-name }}
+          environment: aws-produto-financeiro-dev
+          environment-set: ${{ env.environment-set }}
+          type: infra
+      - name: Deploy App
+        uses: grupoboticario/actions-cd-alquimia@v1
+        id: actions-cd-app
+        with:
+          app-name: ${{ env.app-name }}
+          environment: aws-produto-financeiro-dev
+          environment-set: ${{ env.environment-set }}
+          type: app
+  cd_hml:
+    name: CD - hml
+    if: ${{ success() && github.event_name != 'pull_request' }}
+    needs: [cd_dev]
+    runs-on: [self-hosted, vs-produto-financeiro-arm64]
+    environment:
+      name: hml
+      url: ${{ steps.actions-cd-app.outputs.environment-url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy Infra
+        uses: grupoboticario/actions-cd-alquimia@v1
+        id: actions-cd-infra
+        with:
+          app-name: ${{ env.app-name }}
+          environment: aws-produto-financeiro-hml
+          environment-set: ${{ env.environment-set }}
+          type: infra
+      - name: Deploy App
+        uses: grupoboticario/actions-cd-alquimia@v1
+        id: actions-cd-app
+        with:
+          app-name: ${{ env.app-name }}
+          environment: aws-produto-financeiro-hml
+          environment-set: ${{ env.environment-set }}
+          type: app
+  cd_prd:
+    name: CD - prd
+    if: ${{ success() && github.ref == 'refs/heads/main' }}
+    needs: [cd_hml]
+    runs-on: [self-hosted, vs-produto-financeiro-arm64]
+    environment:
+      name: prd
+      url: ${{ steps.actions-cd-app.outputs.environment-url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy Infra
+        uses: grupoboticario/actions-cd-alquimia@v1
+        id: actions-cd-infra
+        with:
+          app-name: ${{ env.app-name }}
+          environment: aws-produto-financeiro-prd
+          environment-set: ${{ env.environment-set }}
+          type: infra
+      - name: Deploy App
+        uses: grupoboticario/actions-cd-alquimia@v1
+        id: actions-cd-app
+        with:
+          app-name: ${{ env.app-name }}
+          environment: aws-produto-financeiro-prd
+          environment-set: ${{ env.environment-set }}
+          type: app

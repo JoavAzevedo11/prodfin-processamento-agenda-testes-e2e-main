@@ -1,0 +1,14 @@
+infra:
+  iamsecrets:
+    enabled: true
+    name: 'agenda-testes-e2e'
+    namespace: 'processamento'
+    awsAccount: '020805263868'
+    awsRegion: 'us-east-1'
+  roleapp:
+    enabled: true
+    name: 'agenda-testes-e2e'
+    namespace: 'processamento'
+    awsAccount: '020805263868'
+    awsRegion: 'us-east-1'
+    oidc: '71BF0B337EAFFA92E18598D2227956ED'

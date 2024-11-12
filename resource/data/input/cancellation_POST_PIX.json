@@ -1,0 +1,25 @@
+{
+    "authorizationCode": "15f1a6d1f6d16",
+    "availableAmount": 1000,
+    "cancellationAmount": 500.53,
+    "e2eId": "1234",
+    "metadata": [
+        {
+            "key": "customer_id",
+            "value": "123456"
+        },
+        {
+            "key": "outro_dado",
+            "value": "4fda156f16ds"
+        }
+    ],
+    "provider": "BRADESCO",
+    "saleId": "16516",
+    "tid": "b3da3f31-9c0a-4da2-9b19-bc1ce4391f6c",
+    "transactionAmount": 1245.67,
+    "transactionDate": "2024-06-19",
+    "transactionId": "0c0f0ccc-b9e7-4b44-b946-f8f13172b3d7",
+    "transactionStatusId": 2,
+    "transactionType": "PIX",
+    "txId": "1234"
+}
