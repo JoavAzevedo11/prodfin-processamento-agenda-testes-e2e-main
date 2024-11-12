@@ -403,3 +403,5 @@ TC28: Validar Cancelamento Enviando "transactionId" Vazio
     Dado que altero o valor do campo transactionId do BODY para ${EMPTY}
     Quando que realizo a requisição do tipo POST para /cancellation
     Então o status code deve ser 400
+
+#teste#
